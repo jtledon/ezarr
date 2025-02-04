@@ -61,34 +61,34 @@ services:
       - "8787:8787"
     restart: unless-stopped
 
-  mylar3:
-    image: lscr.io/linuxserver/mylar3:latest
-    container_name: mylar3
-    environment:
-      - PUID=${MYLAR_UID}
-      - PGID=${MEDIACENTER_GID}
-      - UMASK=002
-    volumes:
-      - ${ROOT_DIR}/config/mylar-config:/config
-      - ${ROOT_DIR}/data:/data
-    ports:
-      - "8090:8090"
-    restart: unless-stopped
+  # mylar3:
+  #   image: lscr.io/linuxserver/mylar3:latest
+  #   container_name: mylar3
+  #   environment:
+  #     - PUID=${MYLAR_UID}
+  #     - PGID=${MEDIACENTER_GID}
+  #     - UMASK=002
+  #   volumes:
+  #     - ${ROOT_DIR}/config/mylar-config:/config
+  #     - ${ROOT_DIR}/data:/data
+  #   ports:
+  #     - "8090:8090"
+  #   restart: unless-stopped
 
-  audiobookshelf:
-    image: ghcr.io/advplyr/audiobookshelf:latest
-    container_name: audiobookshelf
-    environment:
-      - user=${AUDIOBOOKSHELF_UID}:${MEDIACENTER_GID}
-      - TZ=${TIMEZONE}
-    volumes:
-      - ${ROOT_DIR}/config/audiobookshelf:/config
-      - ${ROOT_DIR}/data/media/audiobooks:/audiobooks
-      - ${ROOT_DIR}/data/media/podcasts:/podcasts
-      - ${ROOT_DIR}/data/media/audiobookshelf-metadata:/metadata
-    ports:
-      - "13378:80"
-    restart: unless-stopped
+  # audiobookshelf:
+  #   image: ghcr.io/advplyr/audiobookshelf:latest
+  #   container_name: audiobookshelf
+  #   environment:
+  #     - user=${AUDIOBOOKSHELF_UID}:${MEDIACENTER_GID}
+  #     - TZ=${TIMEZONE}
+  #   volumes:
+  #     - ${ROOT_DIR}/config/audiobookshelf:/config
+  #     - ${ROOT_DIR}/data/media/audiobooks:/audiobooks
+  #     - ${ROOT_DIR}/data/media/podcasts:/podcasts
+  #     - ${ROOT_DIR}/data/media/audiobookshelf-metadata:/metadata
+  #   ports:
+  #     - "13378:80"
+  #   restart: unless-stopped
 
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
@@ -104,19 +104,19 @@ services:
       - "6767:6767"
     restart: unless-stopped
 
-  overseerr:
-    image: sctx/overseerr:latest
-    container_name: overseerr
-    environment:
-      - PUID=${OVERSEERR_UID}
-      - PGID=${MEDIACENTER_GID}
-      - UMASK=002
-      - TZ=${TIMEZONE}
-    volumes:
-      - ${ROOT_DIR}/config/overseerr-config:/app/config
-    ports:
-      - "5055:5055"
-    restart: unless-stopped
+  # overseerr:
+  #   image: sctx/overseerr:latest
+  #   container_name: overseerr
+  #   environment:
+  #     - PUID=${OVERSEERR_UID}
+  #     - PGID=${MEDIACENTER_GID}
+  #     - UMASK=002
+  #     - TZ=${TIMEZONE}
+  #   volumes:
+  #     - ${ROOT_DIR}/config/overseerr-config:/app/config
+  #   ports:
+  #     - "5055:5055"
+  #   restart: unless-stopped
 
   jellyseerr:
     image: fallenbagel/jellyseerr:latest
@@ -146,19 +146,19 @@ services:
       - "9696:9696"
     restart: unless-stopped
   
-  jackett:
-    image: lscr.io/linuxserver/jackett:latest
-    container_name: jackett
-    environment:
-      - PUID=${JACKETT_UID}
-      - PGID=${MEDIACENTER_GID}
-      - UMASK=002
-      - TZ=${TIMEZONE}    
-    volumes:
-      - ${ROOT_DIR}/config/jackett-config:/config
-    ports:
-      - 9117:9117
-    restart: unless-stopped
+  # jackett:
+  #   image: lscr.io/linuxserver/jackett:latest
+  #   container_name: jackett
+  #   environment:
+  #     - PUID=${JACKETT_UID}
+  #     - PGID=${MEDIACENTER_GID}
+  #     - UMASK=002
+  #     - TZ=${TIMEZONE}    
+  #   volumes:
+  #     - ${ROOT_DIR}/config/jackett-config:/config
+  #   ports:
+  #     - 9117:9117
+  #   restart: unless-stopped
 
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
@@ -172,35 +172,35 @@ services:
       - "8191:8191"
     restart: unless-stopped
 
-  plex:
-    image: lscr.io/linuxserver/plex:latest
-    container_name: plex
-    network_mode: host
-    environment:
-      - PUID=${PLEX_UID}
-      - PGID=${MEDIACENTER_GID}
-      - VERSION=docker
-      - PLEX_CLAIM=${PLEX_CLAIM}
-    volumes:
-      - ${ROOT_DIR}/config/plex-config:/config
-      - ${ROOT_DIR}/data/media:/media
-    restart: unless-stopped
+  # plex:
+  #   image: lscr.io/linuxserver/plex:latest
+  #   container_name: plex
+  #   network_mode: host
+  #   environment:
+  #     - PUID=${PLEX_UID}
+  #     - PGID=${MEDIACENTER_GID}
+  #     - VERSION=docker
+  #     - PLEX_CLAIM=${PLEX_CLAIM}
+  #   volumes:
+  #     - ${ROOT_DIR}/config/plex-config:/config
+  #     - ${ROOT_DIR}/data/media:/media
+  #   restart: unless-stopped
 
-  tautulli:
-    image: lscr.io/linuxserver/tautulli:latest
-    container_name: tautulli
-    # commented out because plex can also run outside of docker
-    #depends_on: 
-    #  - plex
-    environment:
-      - PUID=${UID}
-      - PGID=${MEDIACENTER_GID}
-      - TZ=${TIMEZONE}
-    volumes:
-      - ${ROOT_DIR}/config/tautulli-config:/config
-    ports:
-      - "8181:8181"
-    restart: unless-stopped
+  # tautulli:
+  #   image: lscr.io/linuxserver/tautulli:latest
+  #   container_name: tautulli
+  #   # commented out because plex can also run outside of docker
+  #   #depends_on: 
+  #   #  - plex
+  #   environment:
+  #     - PUID=${UID}
+  #     - PGID=${MEDIACENTER_GID}
+  #     - TZ=${TIMEZONE}
+  #   volumes:
+  #     - ${ROOT_DIR}/config/tautulli-config:/config
+  #   ports:
+  #     - "8181:8181"
+  #   restart: unless-stopped
 
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
