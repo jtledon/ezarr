@@ -2,7 +2,8 @@
 
 # shut down all ezarr containers referenced by docker-compose.yml 
 # If you previously had ezarr installed somewhere else you have to do this manually in the directory where the docker-compose file is.
-sudo docker compose down
+
+#sudo docker compose down
 
 # Remove old users and group
 sudo userdel sonarr
