@@ -1,5 +1,10 @@
 ---
 name: ezarr
+
+networks:
+  arr-net:
+    driver: bridge
+
 services:
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
@@ -14,6 +19,8 @@ services:
       - ${ROOT_DIR}/data:/data
     ports:
       - "8989:8989"
+    networks:
+      - arr-net
     restart: unless-stopped
 
   radarr:
@@ -29,6 +36,8 @@ services:
       - ${ROOT_DIR}/data:/data
     ports:
       - "7878:7878"
+    networks:
+      - arr-net
     restart: unless-stopped
 
   lidarr:
@@ -44,6 +53,8 @@ services:
       - ${ROOT_DIR}/data:/data
     ports:
       - "8686:8686"
+    networks:
+      - arr-net
     restart: unless-stopped
 
   readarr:
@@ -59,6 +70,8 @@ services:
       - ${ROOT_DIR}/data:/data
     ports:
       - "8787:8787"
+    networks:
+      - arr-net
     restart: unless-stopped
 
   # mylar3:
@@ -102,6 +115,8 @@ services:
       - ${ROOT_DIR}/data/media:/media
     ports:
       - "6767:6767"
+    networks:
+      - arr-net
     restart: unless-stopped
 
   # overseerr:
@@ -130,6 +145,8 @@ services:
       - ${ROOT_DIR}/config/jellyseerr-config:/app/config
     ports:
       - "5056:5055"
+    networks:
+      - arr-net
     restart: unless-stopped
 
   prowlarr:
@@ -144,6 +161,8 @@ services:
       - ${ROOT_DIR}/config/prowlarr-config:/config
     ports:
       - "9696:9696"
+    networks:
+      - arr-net
     restart: unless-stopped
   
   # jackett:
@@ -170,6 +189,8 @@ services:
       - TZ=${TIMEZONE}
     ports:
       - "8191:8191"
+    networks:
+      - arr-net
     restart: unless-stopped
 
   # plex:
@@ -215,6 +236,8 @@ services:
       - ${ROOT_DIR}/data/media:/data
     ports:
       - "8096:8096"
+    networks:
+      - arr-net
     restart: unless-stopped
 
   qbittorrent:
@@ -233,6 +256,8 @@ services:
       - "8080:8080"
       - "6881:6881"
       - "6881:6881/udp"
+    networks:
+      - arr-net
     restart: unless-stopped
 
   sabnzbd:
@@ -248,5 +273,6 @@ services:
       - ${ROOT_DIR}/data/usenet:/data/usenet
     ports:
       - "8081:8080"
+    networks:
+      - arr-net
     restart: unless-stopped
-
