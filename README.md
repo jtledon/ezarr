@@ -154,3 +154,15 @@ On top of the above, connecting the containers above would mean setting a passwo
 API key for all of them. This would lead to everyone using Ezarr having the same API key and user/
 password combination. Personally, I'd rather trust users to figure this out on their own rather
 than trusting them to change these passwords and keys.
+
+
+
+
+
+
+## Actually setting up the containers
+
+https://www.youtube.com/watch?v=3k_MwE0Z3CE
+https://www.youtube.com/watch?v=4IGKF-K_Rgc
+* When linking the services together, don't refer to each service as http://localhost:<port>. Use http://<container_name>:<port> (e.g. http://sonarr:8989) instead
+* Prowlarr can add FlareSolverr under Settings -> indexers -> proxies

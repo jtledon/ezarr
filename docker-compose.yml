@@ -240,6 +240,25 @@ services:
       - arr-net
     restart: unless-stopped
 
+    # There are a couple of networking options that I can choose from, each of which have pros and cons
+    # 1. arr-net bridge docker networking mode
+    #    * this will allow other containers to reference qbittorrent by container name instead of ip address
+    #    * I would have to install the VPN on the VM itself, and Im unable to pass the Surfshark network interface into the qBittorrent container, meaning I cant bind qbittorrent to using the interface. Basically I have no fail-safe
+    #    * When I have the VPN running, I have issues sshing into the machine sometimes (this may have been bc of the kill switch?)
+    # 2. host docker networking mode
+    #    * other containers cant reference qbittorrent by name, and would have to use the static ip. That makes this solution less portable
+    #    * because I am leeching off the host's network interfaces, I have access to the surfshark network interface and can bind qbittorrent to it
+    #      * might still have ssh issues?
+    # 3. forwarding a containers network to another container
+    #    * this allows me to route only certain containers traffic through a VPN, while also keeping LAN access and name references
+    #    * open questions
+    #      * if I were to do this, can I also use the arr-net bridge network to maintain name based references?
+    #        * can I specify if connections are LAN only? or read only? as in WAN traffic only goes onto one network, but LAN access is allowed on the other network
+    #      * if I were to kill the vpn forwarding container, can I guarantee that all internet connectivity would be killed, giving me peace of mind?
+    # 4. routing all network traffic at the Hypervisor/VM level to a VPN
+    #      * Would probably need to install something like OPNsense or OpenWRT for this, and then setup a wireguard tunnel to one of the VPN providers servers
+    #        * Might also need to pass a special network interface from proxmox into this VM
+
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
