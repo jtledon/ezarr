@@ -176,4 +176,5 @@ than trusting them to change these passwords and keys.
 
 * When linking the services together, don't refer to each service as http://localhost:<port>. Use http://<container_name>:<port> (e.g. http://sonarr:8989) instead
     * The exception might have to be when referring to qBittorrent. This is because I am using the network_mode setting to proxy its network requests, so it doesn't connect as well with the other docker net containers
+    * However, because I added the wireguard container to the arr-net, and the ports are being forwarded on that container, if any other container wants to reference qBittorrent, they can use http://wireguard:8080
 * Prowlarr can add FlareSolverr under Settings -> indexers -> proxies
