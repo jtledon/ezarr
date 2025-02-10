@@ -159,10 +159,21 @@ than trusting them to change these passwords and keys.
 
 
 
+## Wireguard
+* I don't want to commit the wireguard config file since it has my private key. Just to remember to put the file back in the ./wireguard-config/wg_confs/* location, as called out in the docker-compose file and the docs
+* The *.conf file name cannot be longer than 15 characters long, as limited by the linux interface name length
+* The PostUp and PreDown configs are (maybe?) required so that I can still access the container over LAN
+
+## qBittorrent
+* In qBittorrent, after connecting the network stack to only using my VPN container, make sure to bind qBittorrent to only being allowed to use that network interface
+    * Options -> Advanced -> Network interface
+* Youll probably need to change the default qBittorrent download location from /downloads to /data so that it matches with the rest of the folder scheme
 
 ## Actually setting up the containers
 
-https://www.youtube.com/watch?v=3k_MwE0Z3CE
-https://www.youtube.com/watch?v=4IGKF-K_Rgc
+* https://www.youtube.com/watch?v=3k_MwE0Z3CE
+* https://www.youtube.com/watch?v=4IGKF-K_Rgc
+
 * When linking the services together, don't refer to each service as http://localhost:<port>. Use http://<container_name>:<port> (e.g. http://sonarr:8989) instead
+    * The exception might have to be when referring to qBittorrent. This is because I am using the network_mode setting to proxy its network requests, so it doesn't connect as well with the other docker net containers
 * Prowlarr can add FlareSolverr under Settings -> indexers -> proxies

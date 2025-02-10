@@ -271,12 +271,16 @@ services:
     volumes:
       - ${ROOT_DIR}/config/qbittorrent-config:/config
       - ${ROOT_DIR}/data/torrents:/data/torrents
-    ports:
-      - "8080:8080"
-      - "6881:6881"
-      - "6881:6881/udp"
-    networks:
-      - arr-net
+    # ports:
+    #   - "8080:8080"
+    #   - "6881:6881"
+    #   - "6881:6881/udp"
+    # networks:
+    #   - arr-net
+    network_mode: "container:wireguard" # route traffic through my vpn container
+    depends_on:
+      wireguard:
+        condition: service_started
     restart: unless-stopped
 
   sabnzbd:
@@ -294,4 +298,43 @@ services:
       - "8081:8080"
     networks:
       - arr-net
+    restart: unless-stopped
+
+  # I did in fact require additional help loading in /lib/modules
+  wireguard:
+    image: lscr.io/linuxserver/wireguard:latest
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE # I needed this
+    environment:
+      - PUID=${QBITTORRENT_UID}
+      - PGID=${MEDIACENTER_GID}
+      - TZ=${TIMEZONE}
+      - DOCKER_MODS=lscr.io/linuxserver/mods:universal-tshoot 
+
+      # Mostly server config
+      # - SERVERURL=wireguard.domain.com #optional
+      # - SERVERPORT=51820 #optional
+      # - PEERS=1 #optional
+      # - PEERDNS=auto #optional
+      # - INTERNAL_SUBNET=10.13.13.0 #optional
+      # - ALLOWEDIPS=0.0.0.0/0 #optional
+      # - PERSISTENTKEEPALIVE_PEERS= #optional
+
+      # - LOG_CONFS=true #optional
+    volumes:
+      - ./wireguard-config:/config
+      - /lib/modules:/lib/modules # I needed this
+    networks:
+      - arr-net
+    ports:
+      - 51820:51820/udp
+
+      # These got moved here from qBittorrent
+      - "8080:8080"
+      - "6881:6881"
+      - "6881:6881/udp"
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
     restart: unless-stopped
