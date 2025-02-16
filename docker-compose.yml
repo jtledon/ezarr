@@ -301,6 +301,7 @@ services:
     restart: unless-stopped
 
   # I did in fact require additional help loading in /lib/modules
+  # https://docs.linuxserver.io/images/docker-wireguard/
   wireguard:
     image: lscr.io/linuxserver/wireguard:latest
     container_name: wireguard

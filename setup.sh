@@ -52,7 +52,8 @@ sudo usermod -a -G mediacenter sabnzbd
 # ${ROOT_DIR:-.}/ means take the value from ROOT_DIR value, if failed or empty place it in the current folder
 sudo mkdir -pv ${ROOT_DIR:-.}/config/{sonarr,radarr,bazarr,readarr,lidarr,prowlarr,jellyseerr,jellyfin,qbittorrent,sabnzbd}-config
 # sudo mkdir -pv ${ROOT_DIR:-.}/config/{sonarr,radarr,lidarr,readarr,mylar,prowlarr,qbittorrent,jackett,audiobookshelf,overseerr,plex,jellyfin,tautulli,sabnzbd,jellyseerr,bazarr}-config
-sudo mkdir -pv ${ROOT_DIR:-.}/data/{torrents,usenet,media}/{tv,movies,music,books,comics,audiobooks,podcasts,audiobookshelf-metadata}
+sudo mkdir -pv ${ROOT_DIR:-.}/data/{torrents,usenet/complete,media}/{tv,movies,music,books,comics,audiobooks,podcasts,audiobookshelf-metadata}
+sudo mkdir -pv ${ROOT_DIR:-.}/data/usenet/incomplete
 
 # Set permissions
 sudo chmod -R 775 ${ROOT_DIR:-.}/data/
