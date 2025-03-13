@@ -19,6 +19,7 @@ sudo useradd prowlarr -u $PROWLARR_UID
 sudo useradd jellyseerr -u $JELLYSEERR_UID
 sudo useradd qbittorrent -u $QBITTORRENT_UID
 sudo useradd sabnzbd -u $SABNZBD_UID
+sudo useradd filebrowser -u $FILEBROWSER_UID
 sudo groupadd mediacenter -g $MEDIACENTER_GID
 # sudo useradd audiobookshelf -u $AUDIOBOOKSHELF_UID
 # sudo useradd mylar -u $MYLAR_UID
@@ -42,6 +43,7 @@ sudo usermod -a -G mediacenter prowlarr
 sudo usermod -a -G mediacenter jellyseerr
 sudo usermod -a -G mediacenter qbittorrent
 sudo usermod -a -G mediacenter sabnzbd
+sudo usermod -a -G mediacenter filebrowser
 # sudo usermod -a -G mediacenter audiobookshelf
 # sudo usermod -a -G mediacenter mylar
 # sudo usermod -a -G mediacenter jackett
@@ -50,10 +52,15 @@ sudo usermod -a -G mediacenter sabnzbd
 
 # Make directories
 # ${ROOT_DIR:-.}/ means take the value from ROOT_DIR value, if failed or empty place it in the current folder
-sudo mkdir -pv ${ROOT_DIR:-.}/config/{sonarr,radarr,bazarr,readarr,lidarr,prowlarr,jellyseerr,jellyfin,qbittorrent,sabnzbd}-config
+
+sudo mkdir -pv ${ROOT_DIR:-.}/config/{sonarr,radarr,bazarr,readarr,lidarr,prowlarr,jellyseerr,jellyfin,qbittorrent,sabnzbd,filebrowser}-config
 # sudo mkdir -pv ${ROOT_DIR:-.}/config/{sonarr,radarr,lidarr,readarr,mylar,prowlarr,qbittorrent,jackett,audiobookshelf,overseerr,plex,jellyfin,tautulli,sabnzbd,jellyseerr,bazarr}-config
+
 sudo mkdir -pv ${ROOT_DIR:-.}/data/{torrents,usenet/complete,media}/{tv,movies,music,books,comics,audiobooks,podcasts,audiobookshelf-metadata}
 sudo mkdir -pv ${ROOT_DIR:-.}/data/usenet/incomplete
+
+# > If you don't already have a database file, make sure to create a new empty file under the path you specified. Otherwise, Docker will create an empty folder instead of an empty file, resulting in an error when mounting the database into the container.
+sudo touch ${ROOT_DIR:-.}/config/filebrowser-config/filebrowser.db
 
 # Set permissions
 sudo chmod -R 775 ${ROOT_DIR:-.}/data/
@@ -70,6 +77,7 @@ sudo chown -R jellyseerr:mediacenter 	${ROOT_DIR:-.}/config/jellyseerr-config
 sudo chown -R $UID:mediacenter 		${ROOT_DIR:-.}/config/jellyfin-config
 sudo chown -R qbittorrent:mediacenter 	${ROOT_DIR:-.}/config/qbittorrent-config
 sudo chown -R sabnzbd:mediacenter 	${ROOT_DIR:-.}/config/sabnzbd-config
+sudo chown -R filebrowser:mediacenter 	${ROOT_DIR:-.}/config/filebrowser-config
 # sudo chown -R audiobookshelf:mediacenter ${ROOT_DIR:-.}/config/audiobookshelf-config
 # sudo chown -R mylar:mediacenter 	${ROOT_DIR:-.}/config/mylar-config
 # sudo chown -R jackett:mediacenter 	${ROOT_DIR:-.}/config/jackett-config

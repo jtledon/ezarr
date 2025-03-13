@@ -339,3 +339,18 @@ services:
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
     restart: unless-stopped
+
+  # https://filebrowser.org/installation#docker
+  # https://filebrowser.org/cli/filebrowser-config-init
+  # default username:password is admin:admin
+  filebrowser:
+    image: filebrowser/filebrowser
+    container_name: filebrowser
+    volumes:
+      - ${ROOT_DIR}/config/filebrowser-config/filebrowser.db:/database.db
+      - ${ROOT_DIR}/data/:/srv
+    ports:
+      - "8085:80"
+    networks:
+      - arr-net
+    restart: unless-stopped

@@ -20,5 +20,6 @@ sudo userdel overseerr
 sudo userdel jellyseerr
 sudo userdel qbittorrent
 sudo userdel sabnzbd
+sudo userdel filebrowser
 sudo groupdel mediacenter
 
