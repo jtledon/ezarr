@@ -74,20 +74,6 @@ services:
       - arr-net
     restart: unless-stopped
 
-  # mylar3:
-  #   image: lscr.io/linuxserver/mylar3:latest
-  #   container_name: mylar3
-  #   environment:
-  #     - PUID=${MYLAR_UID}
-  #     - PGID=${MEDIACENTER_GID}
-  #     - UMASK=002
-  #   volumes:
-  #     - ${ROOT_DIR}/config/mylar-config:/config
-  #     - ${ROOT_DIR}/data:/data
-  #   ports:
-  #     - "8090:8090"
-  #   restart: unless-stopped
-
   # audiobookshelf:
   #   image: ghcr.io/advplyr/audiobookshelf:latest
   #   container_name: audiobookshelf
@@ -119,36 +105,6 @@ services:
       - arr-net
     restart: unless-stopped
 
-  # overseerr:
-  #   image: sctx/overseerr:latest
-  #   container_name: overseerr
-  #   environment:
-  #     - PUID=${OVERSEERR_UID}
-  #     - PGID=${MEDIACENTER_GID}
-  #     - UMASK=002
-  #     - TZ=${TIMEZONE}
-  #   volumes:
-  #     - ${ROOT_DIR}/config/overseerr-config:/app/config
-  #   ports:
-  #     - "5055:5055"
-  #   restart: unless-stopped
-
-  jellyseerr:
-    image: fallenbagel/jellyseerr:latest
-    container_name: jellyseerr
-    environment:
-      - PUID=${JELLYSEERR_UID}
-      - PGID=${MEDIACENTER_GID}
-      - UMASK=002
-      - TZ=${TIMEZONE}
-    volumes:
-      - ${ROOT_DIR}/config/jellyseerr-config:/app/config
-    ports:
-      - "5056:5055"
-    networks:
-      - arr-net
-    restart: unless-stopped
-
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:develop
     container_name: prowlarr
@@ -165,20 +121,6 @@ services:
       - arr-net
     restart: unless-stopped
   
-  # jackett:
-  #   image: lscr.io/linuxserver/jackett:latest
-  #   container_name: jackett
-  #   environment:
-  #     - PUID=${JACKETT_UID}
-  #     - PGID=${MEDIACENTER_GID}
-  #     - UMASK=002
-  #     - TZ=${TIMEZONE}    
-  #   volumes:
-  #     - ${ROOT_DIR}/config/jackett-config:/config
-  #   ports:
-  #     - 9117:9117
-  #   restart: unless-stopped
-
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
     container_name: flaresolverr
@@ -192,36 +134,6 @@ services:
     networks:
       - arr-net
     restart: unless-stopped
-
-  # plex:
-  #   image: lscr.io/linuxserver/plex:latest
-  #   container_name: plex
-  #   network_mode: host
-  #   environment:
-  #     - PUID=${PLEX_UID}
-  #     - PGID=${MEDIACENTER_GID}
-  #     - VERSION=docker
-  #     - PLEX_CLAIM=${PLEX_CLAIM}
-  #   volumes:
-  #     - ${ROOT_DIR}/config/plex-config:/config
-  #     - ${ROOT_DIR}/data/media:/media
-  #   restart: unless-stopped
-
-  # tautulli:
-  #   image: lscr.io/linuxserver/tautulli:latest
-  #   container_name: tautulli
-  #   # commented out because plex can also run outside of docker
-  #   #depends_on: 
-  #   #  - plex
-  #   environment:
-  #     - PUID=${UID}
-  #     - PGID=${MEDIACENTER_GID}
-  #     - TZ=${TIMEZONE}
-  #   volumes:
-  #     - ${ROOT_DIR}/config/tautulli-config:/config
-  #   ports:
-  #     - "8181:8181"
-  #   restart: unless-stopped
 
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
@@ -240,26 +152,40 @@ services:
       - arr-net
     restart: unless-stopped
 
-    # There are a couple of networking options that I can choose from, each of which have pros and cons
-    # 1. arr-net bridge docker networking mode
-    #    * this will allow other containers to reference qbittorrent by container name instead of ip address
-    #    * I would have to install the VPN on the VM itself, and Im unable to pass the Surfshark network interface into the qBittorrent container, meaning I cant bind qbittorrent to using the interface. Basically I have no fail-safe
-    #    * When I have the VPN running, I have issues sshing into the machine sometimes (this may have been bc of the kill switch?)
-    # 2. host docker networking mode
-    #    * other containers cant reference qbittorrent by name, and would have to use the static ip. That makes this solution less portable
-    #    * because I am leeching off the host's network interfaces, I have access to the surfshark network interface and can bind qbittorrent to it
-    #      * might still have ssh issues?
-    # 3. forwarding a containers network to another container
-    #    * this allows me to route only certain containers traffic through a VPN, while also keeping LAN access and name references
-    #    * open questions
-    #      * if I were to do this, can I also use the arr-net bridge network to maintain name based references?
-    #        * can I specify if connections are LAN only? or read only? as in WAN traffic only goes onto one network, but LAN access is allowed on the other network
-    #      * if I were to kill the vpn forwarding container, can I guarantee that all internet connectivity would be killed, giving me peace of mind?
-    # 4. routing all network traffic at the Hypervisor/VM level to a VPN
-    #      * Would probably need to install something like OPNsense or OpenWRT for this, and then setup a wireguard tunnel to one of the VPN providers servers
-    #        * Might also need to pass a special network interface from proxmox into this VM
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - PUID=${JELLYSEERR_UID}
+      - PGID=${MEDIACENTER_GID}
+      - UMASK=002
+      - TZ=${TIMEZONE}
+    volumes:
+      - ${ROOT_DIR}/config/jellyseerr-config:/app/config
+    ports:
+      - "5056:5055"
+    networks:
+      - arr-net
+    restart: unless-stopped
 
-
+  # There are a couple of networking options that I can choose from, each of which have pros and cons
+  # 1. arr-net bridge docker networking mode
+  #    * this will allow other containers to reference qbittorrent by container name instead of ip address
+  #    * I would have to install the VPN on the VM itself, and Im unable to pass the Surfshark network interface into the qBittorrent container, meaning I cant bind qbittorrent to using the interface. Basically I have no fail-safe
+  #    * When I have the VPN running, I have issues sshing into the machine sometimes (this may have been bc of the kill switch?)
+  # 2. host docker networking mode
+  #    * other containers cant reference qbittorrent by name, and would have to use the static ip. That makes this solution less portable
+  #    * because I am leeching off the host's network interfaces, I have access to the surfshark network interface and can bind qbittorrent to it
+  #      * might still have ssh issues?
+  # 3. forwarding a containers network to another container
+  #    * this allows me to route only certain containers traffic through a VPN, while also keeping LAN access and name references
+  #    * open questions
+  #      * if I were to do this, can I also use the arr-net bridge network to maintain name based references?
+  #        * can I specify if connections are LAN only? or read only? as in WAN traffic only goes onto one network, but LAN access is allowed on the other network
+  #      * if I were to kill the vpn forwarding container, can I guarantee that all internet connectivity would be killed, giving me peace of mind?
+  # 4. routing all network traffic at the Hypervisor/VM level to a VPN
+  #      * Would probably need to install something like OPNsense or OpenWRT for this, and then setup a wireguard tunnel to one of the VPN providers servers
+  #        * Might also need to pass a special network interface from proxmox into this VM
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
