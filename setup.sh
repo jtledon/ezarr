@@ -22,10 +22,6 @@ sudo useradd sabnzbd -u $SABNZBD_UID
 sudo useradd filebrowser -u $FILEBROWSER_UID
 sudo groupadd mediacenter -g $MEDIACENTER_GID
 # sudo useradd audiobookshelf -u $AUDIOBOOKSHELF_UID
-# sudo useradd mylar -u $MYLAR_UID
-# sudo useradd jackett -u $JACKETT_UID
-# sudo useradd overseerr -u $OVERSEERR_UID
-# sudo useradd plex -u $PLEX_UID
 
 # Adds current user to the mediacenter group. This is recommended so that you can still have access to files inside the ezarr folder structure for manual control.
 # This is way better than just doing everything as root, especially on NFS shares. Also some services run as the default user anyway (Jellyfin, Tautulli).
@@ -45,17 +41,10 @@ sudo usermod -a -G mediacenter qbittorrent
 sudo usermod -a -G mediacenter sabnzbd
 sudo usermod -a -G mediacenter filebrowser
 # sudo usermod -a -G mediacenter audiobookshelf
-# sudo usermod -a -G mediacenter mylar
-# sudo usermod -a -G mediacenter jackett
-# sudo usermod -a -G mediacenter overseerr
-# sudo usermod -a -G mediacenter plex
 
 # Make directories
 # ${ROOT_DIR:-.}/ means take the value from ROOT_DIR value, if failed or empty place it in the current folder
-
 sudo mkdir -pv ${ROOT_DIR:-.}/config/{sonarr,radarr,bazarr,readarr,lidarr,prowlarr,jellyseerr,jellyfin,qbittorrent,sabnzbd,filebrowser}-config
-# sudo mkdir -pv ${ROOT_DIR:-.}/config/{sonarr,radarr,lidarr,readarr,mylar,prowlarr,qbittorrent,jackett,audiobookshelf,overseerr,plex,jellyfin,tautulli,sabnzbd,jellyseerr,bazarr}-config
-
 sudo mkdir -pv ${ROOT_DIR:-.}/data/{torrents,usenet/complete,media}/{tv,movies,music,books,comics,audiobooks,podcasts,audiobookshelf-metadata}
 sudo mkdir -pv ${ROOT_DIR:-.}/data/usenet/incomplete
 
@@ -79,10 +68,5 @@ sudo chown -R qbittorrent:mediacenter 	${ROOT_DIR:-.}/config/qbittorrent-config
 sudo chown -R sabnzbd:mediacenter 	${ROOT_DIR:-.}/config/sabnzbd-config
 sudo chown -R filebrowser:mediacenter 	${ROOT_DIR:-.}/config/filebrowser-config
 # sudo chown -R audiobookshelf:mediacenter ${ROOT_DIR:-.}/config/audiobookshelf-config
-# sudo chown -R mylar:mediacenter 	${ROOT_DIR:-.}/config/mylar-config
-# sudo chown -R jackett:mediacenter 	${ROOT_DIR:-.}/config/jackett-config
-# sudo chown -R $UID:mediacenter 		${ROOT_DIR:-.}/config/tautulli-config
-# sudo chown -R overseerr:mediacenter 	${ROOT_DIR:-.}/config/overseerr-config
-# sudo chown -R plex:mediacenter 		${ROOT_DIR:-.}/config/plex-config
 
 echo "Done! It is recommended to reboot now."
