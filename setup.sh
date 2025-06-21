@@ -44,7 +44,7 @@ sudo usermod -a -G mediacenter filebrowser
 
 # Make directories
 # ${ROOT_DIR:-.}/ means take the value from ROOT_DIR value, if failed or empty place it in the current folder
-sudo mkdir -pv ${ROOT_DIR:-.}/config/{sonarr,radarr,bazarr,readarr,lidarr,prowlarr,jellyseerr,jellyfin,qbittorrent,sabnzbd,filebrowser}-config
+sudo mkdir -pv ${ROOT_DIR:-.}/config/{sonarr,radarr,bazarr,readarr,lidarr,prowlarr,jellyseerr,jellyfin,jellystat,jellystatdb,qbittorrent,sabnzbd,filebrowser}-config
 sudo mkdir -pv ${ROOT_DIR:-.}/data/{torrents,usenet/complete,media}/{tv,movies,music,books,comics,audiobooks,podcasts,audiobookshelf-metadata}
 sudo mkdir -pv ${ROOT_DIR:-.}/data/usenet/incomplete
 
@@ -64,6 +64,8 @@ sudo chown -R lidarr:mediacenter 	${ROOT_DIR:-.}/config/lidarr-config
 sudo chown -R prowlarr:mediacenter 	${ROOT_DIR:-.}/config/prowlarr-config
 sudo chown -R jellyseerr:mediacenter 	${ROOT_DIR:-.}/config/jellyseerr-config
 sudo chown -R $UID:mediacenter 		${ROOT_DIR:-.}/config/jellyfin-config
+sudo chown -R $UID:mediacenter 		${ROOT_DIR:-.}/config/jellystat-config
+sudo chown -R $UID:mediacenter 		${ROOT_DIR:-.}/config/jellystatdb-config
 sudo chown -R qbittorrent:mediacenter 	${ROOT_DIR:-.}/config/qbittorrent-config
 sudo chown -R sabnzbd:mediacenter 	${ROOT_DIR:-.}/config/sabnzbd-config
 sudo chown -R filebrowser:mediacenter 	${ROOT_DIR:-.}/config/filebrowser-config

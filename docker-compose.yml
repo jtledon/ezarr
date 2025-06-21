@@ -168,6 +168,46 @@ services:
       - arr-net
     restart: unless-stopped
 
+  # https://github.com/CyferShepard/Jellystat
+  # https://hub.docker.com/r/cyfershepard/jellystat
+  # https://github.com/Wh1rr/ultimate-jellyfin-stack/blob/768b902378ea037c1f76cd3ed60a4a8d75833ca8/docker-compose.yml#L455-L486
+  jellystat-db:
+    image: "postgres:15.2"
+    container_name: jellystat-db
+    shm_size: 1gb
+    environment:
+      # - POSTGRES_USER=postgres
+      # - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=${JELLYSTATDB_USER:-postgres}
+      - POSTGRES_PASSWORD=${JELLYSTATDB_PW:-password}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ${ROOT_DIR}/config/jellystatdb-config:/var/lib/postgresql/data
+    networks:
+      - arr-net
+    restart: unless-stopped
+
+  jellystat:
+    image: "cyfershepard/jellystat:latest"
+    container_name: jellystat
+    environment:
+      # - POSTGRES_USER=postgres
+      # - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=${JELLYSTATDB_USER:-postgres}
+      - POSTGRES_PASSWORD=${JELLYSTATDB_PW:-password}
+      - POSTGRES_IP=jellystat-db
+      - POSTGRES_PORT=5432
+      - JWT_SECRET=${JWT_SECRET:-'my-secret-jwt-key'}
+    volumes:
+      - ${ROOT_DIR}/config/jellystat-config:/app/backend/backup-data
+    ports:
+      - "3000:3000"
+    networks:
+      - arr-net
+    depends_on:
+      - jellystat-db
+    restart: unless-stopped
+
   # There are a couple of networking options that I can choose from, each of which have pros and cons
   # 1. arr-net bridge docker networking mode
   #    * this will allow other containers to reference qbittorrent by container name instead of ip address

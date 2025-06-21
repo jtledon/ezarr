@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Shutds down all the containers, updates them and removes the old images. 
+# Shuts down all the containers, updates them and removes the old images. 
 # If you want to keep the old images remove or comment the last line.
 
 # If the following commands throw permission errors, uncomment the following lines
